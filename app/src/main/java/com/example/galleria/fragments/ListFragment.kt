@@ -49,8 +49,8 @@ class ListFragment : Fragment() {
         val button = view.findViewById<Button>(R.id.button)
         button.setOnClickListener{
             Log.d("TAG", "onViewCreated: ")
-            findNavController().navigate(R.id.detailFragment)
-            //Navigation.createNavigateOnClickListener(R.id.action_listFragment_to_detailFragment, null)
+            val action = ListFragmentDirections.actionListFragmentToDetailFragment(10,"ciao")
+            findNavController().navigate(action)
         };
     }
 

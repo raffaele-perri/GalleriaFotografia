@@ -22,7 +22,16 @@
         android:id="@+id/detailFragment"
         android:name="com.example.galleria.fragments.DetailFragment"
         android:label="fragment_detail"
-        tools:layout="@layout/fragment_detail" />
+        tools:layout="@layout/fragment_detail" >
+        <argument
+            android:name="param"
+            app:argType="integer"
+            android:defaultValue="5" />
+        <argument
+            android:name="stringa"
+            app:argType="string"
+            android:defaultValue='""' />
+    </fragment>
     <fragment
         android:id="@+id/bookMarkFragment"
         android:name="com.example.galleria.fragments.BookMarkFragment"
