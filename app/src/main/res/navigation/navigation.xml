@@ -8,12 +8,11 @@
     <fragment
         android:id="@+id/listFragment"
         android:name="com.example.galleria.fragments.ListFragment"
-        android:label="fragment_list"
-        tools:layout="@layout/fragment_list" >
+        android:label="List"
+        tools:layout="@layout/fragment_list">
         <action
             android:id="@+id/action_listFragment_to_detailFragment"
-            app:destination="@id/detailFragment"
-        />
+            app:destination="@id/detailFragment" />
         <action
             android:id="@+id/action_listFragment_to_bookMarkFragment"
             app:destination="@id/bookMarkFragment" />
@@ -21,22 +20,22 @@
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.example.galleria.fragments.DetailFragment"
-        android:label="fragment_detail"
-        tools:layout="@layout/fragment_detail" >
+        android:label="Detail"
+        tools:layout="@layout/fragment_detail">
         <argument
             android:name="param"
-            app:argType="integer"
-            android:defaultValue="5" />
+            android:defaultValue="5"
+            app:argType="integer" />
         <argument
             android:name="stringa"
-            app:argType="string"
-            android:defaultValue='""' />
+            android:defaultValue='""'
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/bookMarkFragment"
         android:name="com.example.galleria.fragments.BookMarkFragment"
-        android:label="fragment_book_mark"
-        tools:layout="@layout/fragment_book_mark" >
+        android:label="BookMark"
+        tools:layout="@layout/fragment_book_mark">
         <action
             android:id="@+id/action_bookMarkFragment_to_listFragment"
             app:destination="@id/listFragment" />
