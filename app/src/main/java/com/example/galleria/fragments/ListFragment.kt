@@ -7,10 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.navigation.Navigation
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.galleria.R
-import kotlin.math.log
+import com.example.galleria.viewModel.ListViewModel
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,12 +27,15 @@ class ListFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private val model: ListViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
 
     }
 
@@ -40,6 +43,8 @@ class ListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
         return  inflater.inflate(R.layout.fragment_list, container, false)
 
     }
@@ -47,6 +52,15 @@ class ListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val button = view.findViewById<Button>(R.id.button)
+
+        Log.d("TAG", "onCreate: ${model.getBeers()}")
+
+        model.getBeers().observe(viewLifecycleOwner, { beers ->
+            beers.map { beer -> Log.d("BIRRAA", "BIRRAAA: $beer") }
+        })
+        model.loadBeers()
+
+
         button.setOnClickListener{
             Log.d("TAG", "onViewCreated: ")
             val action = ListFragmentDirections.actionListFragmentToDetailFragment(10,"ciao")
