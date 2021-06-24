@@ -2,14 +2,20 @@ package com.example.galleria.fragments
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.galleria.R
+import com.example.galleria.adapters.BeerListAdapter
+import com.example.galleria.model.Beer
 import com.example.galleria.viewModel.ListViewModel
 
 // TODO: Rename parameter arguments, choose names that match
@@ -27,6 +33,10 @@ class ListFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var recycler:RecyclerView
+    private var page = 1
+    private var isLoading = false
+    private var isLastPage = false
     private val model: ListViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -36,14 +46,12 @@ class ListFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
 
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
 
         return  inflater.inflate(R.layout.fragment_list, container, false)
 
@@ -52,18 +60,38 @@ class ListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val button = view.findViewById<Button>(R.id.button)
+        recycler = view.findViewById(R.id.recyclerView)
+        val linearLayoutManager = LinearLayoutManager(activity)
+        recycler.addItemDecoration(DividerItemDecoration(recycler.context,DividerItemDecoration.VERTICAL))
+        recycler.layoutManager = linearLayoutManager
+        recycler.addOnScrollListener(object: PaginationScrollListener(linearLayoutManager){
+            override fun loadMoreItems() {
+                model.loadBeers(page)
+                page++
+            }
 
-        Log.d("TAG", "onCreate: ${model.getBeers()}")
+            override fun isLastPage(): Boolean {
+                return isLastPage
+            }
 
-        model.getBeers().observe(viewLifecycleOwner, { beers ->
-            beers.map { beer -> Log.d("BIRRAA", "BIRRAAA: $beer") }
+            override fun isLoading(): Boolean {
+                return isLoading
+            }
+
         })
+        model.getBeers().observe(viewLifecycleOwner, { beers ->
+            recycler.adapter = BeerListAdapter(beers){
+                beer ->   Toast.makeText(context, "${beer.name}", Toast.LENGTH_SHORT).show()
+                val action = ListFragmentDirections.actionListFragmentToDetailFragment(beer.id)
+                findNavController().navigate(action)
+            }
+            isLoading = false
+        })
+
         model.loadBeers()
 
-
         button.setOnClickListener{
-            Log.d("TAG", "onViewCreated: ")
-            val action = ListFragmentDirections.actionListFragmentToDetailFragment(10,"ciao")
+            val action = ListFragmentDirections.actionListFragmentToDetailFragment(10)
             findNavController().navigate(action)
         };
     }
@@ -88,4 +116,26 @@ class ListFragment : Fragment() {
                 }
             }
     }
+}
+
+
+abstract class PaginationScrollListener(val linearLayoutManager: LinearLayoutManager) :RecyclerView.OnScrollListener(){
+
+    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+        super.onScrolled(recyclerView, dx, dy)
+        val visibleItemCount = linearLayoutManager.childCount
+        val totalItemCount = linearLayoutManager.itemCount
+        val firstVisibleItemPos = linearLayoutManager.findFirstVisibleItemPosition()
+        if(!isLastPage() && !isLoading()){
+            if((visibleItemCount + firstVisibleItemPos) >= totalItemCount && firstVisibleItemPos >= 0)
+                loadMoreItems()
+
+        }
+    }
+
+    abstract fun loadMoreItems()
+
+    abstract fun isLastPage(): Boolean
+
+    abstract fun isLoading(): Boolean
 }

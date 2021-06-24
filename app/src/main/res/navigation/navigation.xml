@@ -23,13 +23,8 @@
         android:label="Detail"
         tools:layout="@layout/fragment_detail">
         <argument
-            android:name="param"
-            android:defaultValue="5"
-            app:argType="integer" />
-        <argument
-            android:name="stringa"
-            android:defaultValue='""'
-            app:argType="string" />
+            android:name="idBeer"
+            app:argType="long" />
     </fragment>
     <fragment
         android:id="@+id/bookMarkFragment"
