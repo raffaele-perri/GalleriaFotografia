@@ -16,4 +16,5 @@ interface APIInterface {
 
     @GET("beers/{id}")
     suspend fun getBeerById(@Path("id") id : Long): Response<List<Beer>>;
+
 }

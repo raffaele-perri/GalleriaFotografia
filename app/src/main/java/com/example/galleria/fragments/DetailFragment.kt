@@ -5,10 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import com.example.galleria.R
 import com.example.galleria.viewModel.DetailViewModel
 
@@ -55,7 +57,8 @@ class DetailFragment : Fragment() {
             view.findViewById<TextView>(R.id.textDetailName).text =  beer.name
             view.findViewById<TextView>(R.id.textDetailTag).text =  beer.tagLine
             view.findViewById<TextView>(R.id.textDetailDescription).text =  beer.description
-
+            val imageView = view.findViewById<ImageView>(R.id.imageView)
+            Glide.with(this).load(beer.imageUrl).into(imageView)
         })
 
         model.loadBeerDetail(id)
