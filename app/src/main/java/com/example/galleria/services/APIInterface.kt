@@ -1,7 +1,6 @@
 package com.example.galleria.services
 
-import com.example.galleria.model.Beer
-import retrofit2.Call
+import com.example.app_domain.model.Beer
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

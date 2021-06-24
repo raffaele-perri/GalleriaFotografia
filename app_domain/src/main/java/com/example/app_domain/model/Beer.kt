@@ -1,6 +1,7 @@
-package com.example.galleria.model
+package com.example.app_domain.model
 
 import com.google.gson.annotations.SerializedName
+
 
 data class Beer(
     @SerializedName("id")val id: Long, @SerializedName("name")val name: String,

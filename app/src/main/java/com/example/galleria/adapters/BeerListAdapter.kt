@@ -1,14 +1,12 @@
 package com.example.galleria.adapters
 
-import android.service.autofill.OnClickAction
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.galleria.R
-import com.example.galleria.fragments.ListFragment
-import com.example.galleria.model.Beer
+import com.example.app_domain.model.Beer
 
 class BeerListAdapter (private val beerList: List<Beer>, private val itemClickAction: (Beer) ->Unit = {}) :
     RecyclerView.Adapter<BeerListAdapter.BeerViewHolder>() {

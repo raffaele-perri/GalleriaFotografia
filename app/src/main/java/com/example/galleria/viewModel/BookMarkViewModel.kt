@@ -3,7 +3,7 @@ package com.example.galleria.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.galleria.model.Beer
+import com.example.app_domain.model.Beer
 
 class BookMarkViewModel : ViewModel() {
 

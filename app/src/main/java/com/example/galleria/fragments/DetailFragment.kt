@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.example.galleria.R
 import com.example.galleria.viewModel.DetailViewModel
 
+
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"

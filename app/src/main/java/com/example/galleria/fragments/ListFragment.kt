@@ -1,7 +1,6 @@
 package com.example.galleria.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,8 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.galleria.R
 import com.example.galleria.adapters.BeerListAdapter
-import com.example.galleria.model.Beer
-import com.example.galleria.viewModel.ListViewModel
+import com.example.app_domain.viewModel.ListViewModel
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -80,8 +78,8 @@ class ListFragment : Fragment() {
 
         })
         model.getBeers().observe(viewLifecycleOwner, { beers ->
-            recycler.adapter = BeerListAdapter(beers){
-                beer ->   Toast.makeText(context, "${beer.name}", Toast.LENGTH_SHORT).show()
+            recycler.adapter = BeerListAdapter(beers){beer ->
+                Toast.makeText(context, "${beer.name}", Toast.LENGTH_SHORT).show()
                 val action = ListFragmentDirections.actionListFragmentToDetailFragment(beer.id)
                 findNavController().navigate(action)
             }

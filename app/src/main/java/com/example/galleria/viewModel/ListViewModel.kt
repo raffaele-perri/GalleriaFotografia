@@ -1,15 +1,15 @@
-package com.example.galleria.viewModel
+package com.example.app_domain.viewModel
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.galleria.model.Beer
+import com.example.app_data.implementation.BeerRepositoryImpl
+import com.example.app_domain.model.Beer
+import com.example.galleria.framework.NetworkDataSourceImpl
 import com.example.galleria.services.APIClient
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Response
 
 class ListViewModel : ViewModel() {
 
@@ -24,15 +24,7 @@ class ListViewModel : ViewModel() {
     fun loadBeers(page: Int){
         //val call = APIClient.client.getBeerList(page)
         viewModelScope.launch {
-            try {
-                val response = APIClient.client.getBeerList(page)
-                if (response.isSuccessful) {
-                    Log.d("RESPONSE", "onResponse: ${response.body()!!}")
-                    beers.postValue(response?.body())
-                }
-            }catch (e:Exception){
-                e.printStackTrace()
-            }
+            beers.postValue(BeerRepositoryImpl(NetworkDataSourceImpl()).getBeerList(page))
         }
 
 //        call.enqueue(object : retrofit2.Callback<List<Beer>> {
