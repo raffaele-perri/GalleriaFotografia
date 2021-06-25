@@ -17,10 +17,10 @@ class NetworkDataSourceImpl @Inject constructor(private val apiService: APIInter
                 Log.d("RESPONSE", "onResponse: ${response.body()!!}")
                 response.body()
             } else
-                emptyList<Beer>()
+                emptyList()
         } catch (e: Exception) {
             e.printStackTrace()
-            emptyList<Beer>()
+            emptyList()
         }!!
     }
 

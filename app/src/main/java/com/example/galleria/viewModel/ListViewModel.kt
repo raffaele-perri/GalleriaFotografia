@@ -4,10 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.app_data.implementation.BeerRepositoryImpl
 import com.example.app_domain.model.Beer
 import com.example.app_domain.repository.IBeerRepository
-import com.example.galleria.framework.NetworkDataSourceImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,7 +15,7 @@ class ListViewModel @Inject constructor(private val beerRepository: IBeerReposit
 
     private val beers: MutableLiveData<List<Beer>> = MutableLiveData<List<Beer>>()
     fun getBeers(): LiveData<List<Beer>>{
-        return beers;
+        return beers
     }
 
     fun loadBeers(){

@@ -10,7 +10,7 @@ class BookMarkViewModel : ViewModel() {
     private val favouriteBeers: MutableLiveData<List<Beer>> = MutableLiveData<List<Beer>>()
 
     fun getFavouriteBeers(): LiveData<List<Beer>> {
-        return favouriteBeers;
+        return favouriteBeers
     }
     fun loadFavouriteBeers() {
         TODO("Not yet implemented")

@@ -56,7 +56,7 @@ class DetailFragment : Fragment() {
         val id = args.idBeer
 
         model.getBeerDetail().observe(viewLifecycleOwner, { beer ->
-            Toast.makeText(context, "${beer.name}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, beer.name, Toast.LENGTH_SHORT).show()
             view.findViewById<TextView>(R.id.textDetailName).text =  beer.name
             view.findViewById<TextView>(R.id.textDetailTag).text =  beer.tagLine
             view.findViewById<TextView>(R.id.textDetailDescription).text =  beer.description
