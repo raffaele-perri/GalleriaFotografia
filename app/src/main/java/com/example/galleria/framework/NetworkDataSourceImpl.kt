@@ -3,8 +3,6 @@ package com.example.galleria.framework
 import android.util.Log
 import com.example.app_data.networking.INetworkDataSource
 import com.example.app_domain.model.Beer
-import com.example.galleria.services.APIClient
-import com.example.galleria.services.APIInterface
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -1,4 +1,4 @@
-package com.example.galleria.services
+package com.example.galleria.framework
 
 import com.example.app_domain.model.Beer
 import retrofit2.Response

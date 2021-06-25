@@ -1,7 +1,7 @@
 package com.example.galleria.di
 
 import com.example.galleria.BuildConfig
-import com.example.galleria.services.APIInterface
+import com.example.galleria.framework.APIInterface
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,7 +19,7 @@ private const val BASEURL = "https://api.punkapi.com/v2/"
 internal class NetworkModule {
     @Provides
     @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient) : APIInterface{
+    fun provideRetrofit(okHttpClient: OkHttpClient) : APIInterface {
         return Retrofit.Builder().baseUrl(BASEURL)
             .addConverterFactory(GsonConverterFactory.create()).
             client(okHttpClient).build().create(APIInterface::class.java)
