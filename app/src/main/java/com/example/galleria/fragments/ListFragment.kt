@@ -14,7 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.galleria.R
 import com.example.galleria.adapters.BeerListAdapter
-import com.example.app_domain.viewModel.ListViewModel
+import com.example.galleria.viewModel.ListViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,6 +27,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+@AndroidEntryPoint
 class ListFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -79,7 +81,7 @@ class ListFragment : Fragment() {
         })
         model.getBeers().observe(viewLifecycleOwner, { beers ->
             recycler.adapter = BeerListAdapter(beers){beer ->
-                Toast.makeText(context, "${beer.name}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, beer.name, Toast.LENGTH_SHORT).show()
                 val action = ListFragmentDirections.actionListFragmentToDetailFragment(beer.id)
                 findNavController().navigate(action)
             }
@@ -91,7 +93,7 @@ class ListFragment : Fragment() {
         button.setOnClickListener{
             val action = ListFragmentDirections.actionListFragmentToDetailFragment(10)
             findNavController().navigate(action)
-        };
+        }
     }
 
 
@@ -117,7 +119,7 @@ class ListFragment : Fragment() {
 }
 
 
-abstract class PaginationScrollListener(val linearLayoutManager: LinearLayoutManager) :RecyclerView.OnScrollListener(){
+abstract class PaginationScrollListener(private val linearLayoutManager: LinearLayoutManager) :RecyclerView.OnScrollListener(){
 
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)

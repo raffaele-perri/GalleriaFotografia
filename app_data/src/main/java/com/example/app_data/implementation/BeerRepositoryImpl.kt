@@ -3,8 +3,11 @@ package com.example.app_data.implementation
 import com.example.app_data.networking.INetworkDataSource
 import com.example.app_domain.model.Beer
 import com.example.app_domain.repository.IBeerRepository
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class BeerRepositoryImpl(private val dataSource: INetworkDataSource) : IBeerRepository {
+@Singleton
+class BeerRepositoryImpl @Inject constructor(private val dataSource: INetworkDataSource) : IBeerRepository {
     override suspend fun getBeerList(): List<Beer> {
         return getBeerList(1)
     }

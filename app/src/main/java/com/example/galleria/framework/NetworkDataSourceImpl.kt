@@ -4,19 +4,17 @@ import android.util.Log
 import com.example.app_data.networking.INetworkDataSource
 import com.example.app_domain.model.Beer
 import com.example.galleria.services.APIClient
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.example.galleria.services.APIInterface
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class NetworkDataSourceImpl : INetworkDataSource {
+@Singleton
+class NetworkDataSourceImpl @Inject constructor(private val apiService: APIInterface): INetworkDataSource {
 
 
     override suspend fun getBeerList(page: Int): List<Beer> {
         return try {
-            val response = APIClient.client.getBeerList(page)
+            val response = apiService.getBeerList(page)
             if (response.isSuccessful) {
                 Log.d("RESPONSE", "onResponse: ${response.body()!!}")
                 response.body()
@@ -29,8 +27,8 @@ class NetworkDataSourceImpl : INetworkDataSource {
     }
 
     override suspend fun getBeerById(id: Long): Beer {
-        return (try {
-            val response = APIClient.client.getBeerById(id)
+        return try {
+            val response = apiService.getBeerById(id)
             if (response.isSuccessful) {
                 Log.d("RESPONSE", "onResponse: ${response.body()!!}")
                 response.body()?.get(0)
@@ -39,7 +37,7 @@ class NetworkDataSourceImpl : INetworkDataSource {
         } catch (e: Exception) {
             e.printStackTrace()
             Beer(0, "Nessuna", "Vuoto", "Niente", "")
-        } as Beer?)!!
+        }!!
     }
 
 }

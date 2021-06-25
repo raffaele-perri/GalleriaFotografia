@@ -13,6 +13,7 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.galleria.R
 import com.example.galleria.viewModel.DetailViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -25,6 +26,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [DetailFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+@AndroidEntryPoint
 class DetailFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
