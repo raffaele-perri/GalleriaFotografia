@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.galleria.R
 import com.example.galleria.adapters.BeerListAdapter
+import com.example.galleria.databinding.FragmentListBinding
 import com.example.galleria.viewModel.ListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -38,6 +39,8 @@ class ListFragment : Fragment() {
     private var isLoading = false
     private var isLastPage = false
     private val model: ListViewModel by viewModels()
+    private var _binding : FragmentListBinding? = null
+    private val binding get() = _binding!!
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -53,14 +56,20 @@ class ListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        return  inflater.inflate(R.layout.fragment_list, container, false)
+        _binding = FragmentListBinding.inflate(inflater, container, false)
+        return binding.root
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val button = view.findViewById<Button>(R.id.button)
-        recycler = view.findViewById(R.id.recyclerView)
+        recycler = binding.recyclerView
         val linearLayoutManager = LinearLayoutManager(activity)
         recycler.addItemDecoration(DividerItemDecoration(recycler.context,DividerItemDecoration.VERTICAL))
         recycler.layoutManager = linearLayoutManager
