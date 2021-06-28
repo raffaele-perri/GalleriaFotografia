@@ -9,4 +9,11 @@ interface IBeerRepository {
     suspend fun getBeerList(page : Int): List<Beer>
 
     suspend fun getBeerById(id : Long): Beer
+
+
+    suspend fun getBeers(): List<Beer>
+
+    suspend fun insertBeers(beers: List<Beer>)
+
+    suspend fun deleteBeer(beer: Beer)
 }

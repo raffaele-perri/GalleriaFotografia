@@ -12,7 +12,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal class DataModule {
+internal class RoomModule {
 
     @Provides
     @Singleton

@@ -1,6 +1,8 @@
 package com.example.galleria.di
 
+import com.example.app_data.database.IDatabaseDataSource
 import com.example.app_data.networking.INetworkDataSource
+import com.example.galleria.framework.database.DatabaseDataSourceImpl
 import com.example.galleria.framework.network.NetworkDataSourceImpl
 import dagger.Binds
 import dagger.Module
@@ -10,8 +12,8 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal abstract class NetworkModule {
+internal abstract class DatabaseModule {
     @Binds
     @Singleton
-    abstract fun provideNetworkDataSource(ds: NetworkDataSourceImpl) : INetworkDataSource
+    abstract fun provideDatabaseDataSource(ds: DatabaseDataSourceImpl) : IDatabaseDataSource
 }

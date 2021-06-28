@@ -1,5 +1,6 @@
 package com.example.app_data.implementation
 
+import com.example.app_data.database.IDatabaseDataSource
 import com.example.app_data.networking.INetworkDataSource
 import com.example.app_domain.model.Beer
 import com.example.app_domain.repository.IBeerRepository
@@ -7,16 +8,32 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class BeerRepositoryImpl @Inject constructor(private val dataSource: INetworkDataSource) : IBeerRepository {
+class BeerRepositoryImpl @Inject constructor(
+    private val networkDataSource: INetworkDataSource,
+    private val databaseDataSource: IDatabaseDataSource
+) : IBeerRepository {
     override suspend fun getBeerList(): List<Beer> {
         return getBeerList(1)
     }
 
     override suspend fun getBeerList(page: Int): List<Beer>{
-        return dataSource.getBeerList(page)
+        return networkDataSource.getBeerList(page)
     }
 
     override suspend fun getBeerById(id: Long): Beer {
-        return dataSource.getBeerById(id)
+        return networkDataSource.getBeerById(id)
     }
+
+    override suspend fun getBeers(): List<Beer>{
+        return databaseDataSource.getBeers()
+    }
+
+    override suspend fun insertBeers(beers: List<Beer>){
+        databaseDataSource.insertBeers(beers)
+    }
+
+    override suspend fun deleteBeer(beer: Beer){
+        databaseDataSource.deleteBeer(beer)
+    }
+
 }

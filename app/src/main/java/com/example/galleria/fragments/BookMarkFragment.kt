@@ -1,11 +1,21 @@
 package com.example.galleria.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.example.app_domain.model.Beer
 import com.example.galleria.R
+import com.example.galleria.adapters.BeerListAdapter
+import com.example.galleria.viewModel.BookMarkViewModel
+import com.example.galleria.viewModel.ListViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlin.random.Random
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -17,11 +27,12 @@ private const val ARG_PARAM2 = "param2"
  * Use the [BookMarkFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+@AndroidEntryPoint
 class BookMarkFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-
+    private val model: BookMarkViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -35,7 +46,18 @@ class BookMarkFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_book_mark, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        model.getFavouriteBeers().observe(viewLifecycleOwner, { beers ->
+            Log.d("PROVA DBBBBBB", "onCreateView: " + beers)
+        })
+
+        //model.insertBeers(Beer(11,"BIRRA PROVA","tag","molto buona",""))
+        model.loadFavouriteBeers()
     }
 
     companion object {

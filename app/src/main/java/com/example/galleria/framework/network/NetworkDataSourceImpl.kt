@@ -1,4 +1,4 @@
-package com.example.galleria.framework
+package com.example.galleria.framework.network
 
 import android.util.Log
 import com.example.app_data.networking.INetworkDataSource
