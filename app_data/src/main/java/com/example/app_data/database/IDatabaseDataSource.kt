@@ -8,5 +8,7 @@ interface IDatabaseDataSource {
 
     suspend fun getBeers(): List<Beer>
 
-    suspend fun deleteBeer(beer : Beer)
+    suspend fun removeBeers(beers: List<Beer>)
+
+    suspend fun getBeerById(beerId: Long) : List<Beer>
 }

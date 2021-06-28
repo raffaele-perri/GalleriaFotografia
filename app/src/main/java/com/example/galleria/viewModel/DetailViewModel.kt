@@ -14,6 +14,11 @@ import javax.inject.Inject
 class DetailViewModel @Inject constructor(private val beerRepository: IBeerRepository): ViewModel() {
 
     private val beer : MutableLiveData<Beer> = MutableLiveData<Beer>()
+    private var fav : MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+
+    fun isFavourite() : LiveData<Boolean>{
+        return fav
+    }
 
     fun getBeerDetail(): LiveData<Beer>{
         return beer
@@ -22,6 +27,23 @@ class DetailViewModel @Inject constructor(private val beerRepository: IBeerRepos
         viewModelScope.launch {
             beer.postValue(beerRepository.getBeerById(id))
         }
+    }
 
+    fun insertBeer(beer:Beer){
+        viewModelScope.launch {
+            beerRepository.insertBeers(listOf(beer))
+        }
+    }
+
+    fun removeBeer(beer:Beer){
+        viewModelScope.launch {
+            beerRepository.removeBeers(listOf(beer))
+        }
+    }
+
+    fun isBeerPresent(beer:Beer){
+        viewModelScope.launch {
+            fav.postValue(beerRepository.isFavouriteBeer(beer.id))
+        }
     }
 }

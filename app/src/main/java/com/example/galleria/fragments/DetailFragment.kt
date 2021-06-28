@@ -11,7 +11,10 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.example.app_domain.model.Beer
 import com.example.galleria.R
+import com.example.galleria.databinding.FragmentDetailBinding
+import com.example.galleria.databinding.FragmentListBinding
 import com.example.galleria.viewModel.DetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -34,6 +37,9 @@ class DetailFragment : Fragment() {
 
     private val args: DetailFragmentArgs by navArgs()
     private val model: DetailViewModel by viewModels()
+    private var _binding : FragmentDetailBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var beerDetail: Beer
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -47,21 +53,38 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail, container, false)
+        _binding = FragmentDetailBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val id = args.idBeer
-
         model.getBeerDetail().observe(viewLifecycleOwner, { beer ->
             Toast.makeText(context, beer.name, Toast.LENGTH_SHORT).show()
-            view.findViewById<TextView>(R.id.textDetailName).text =  beer.name
-            view.findViewById<TextView>(R.id.textDetailTag).text =  beer.tagLine
-            view.findViewById<TextView>(R.id.textDetailDescription).text =  beer.description
-            val imageView = view.findViewById<ImageView>(R.id.imageView)
+            binding.textDetailName.text =  beer.name
+            binding.textDetailTag.text =  beer.tagLine
+            binding.textDetailDescription.text =  beer.description
+            val imageView = binding.imageView
+            model.isBeerPresent(beer)
             Glide.with(this).load(beer.imageUrl).into(imageView)
+            beerDetail = beer
+        })
+
+        model.isFavourite().observe(viewLifecycleOwner, { favourite ->
+            if (favourite)
+                binding.toggleButton.check(R.id.favouriteButton)
+            else
+                binding.toggleButton.uncheck(R.id.favouriteButton)
+
+            binding.toggleButton.addOnButtonCheckedListener{ group,checkedId, isChecked->
+                if (isChecked){
+                    model.insertBeer(beerDetail)
+                    Toast.makeText(requireContext(),"AGGIUNTO AI PREFERITI",Toast.LENGTH_SHORT).show()
+                }else
+                    model.removeBeer(beerDetail)
+                Toast.makeText(requireContext(),"RIMOSSO DAI PREFERITI",Toast.LENGTH_SHORT).show()
+            }
         })
 
         model.loadBeerDetail(id)

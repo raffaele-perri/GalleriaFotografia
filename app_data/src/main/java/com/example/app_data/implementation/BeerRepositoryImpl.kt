@@ -32,8 +32,16 @@ class BeerRepositoryImpl @Inject constructor(
         databaseDataSource.insertBeers(beers)
     }
 
-    override suspend fun deleteBeer(beer: Beer){
-        databaseDataSource.deleteBeer(beer)
+    override suspend fun removeBeers(beers: List<Beer>){
+        databaseDataSource.removeBeers(beers)
+    }
+
+    override suspend fun getFavouriteBeerById(beerId : Long) : List<Beer> {
+        return databaseDataSource.getBeerById(beerId)
+    }
+
+    override suspend fun isFavouriteBeer(beerId : Long) : Boolean {
+        return databaseDataSource.getBeerById(beerId).isNotEmpty()
     }
 
 }

@@ -4,15 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.galleria.R
 import com.example.galleria.adapters.BeerListAdapter
 import com.example.galleria.databinding.FragmentListBinding
 import com.example.galleria.viewModel.ListViewModel
@@ -41,6 +38,7 @@ class ListFragment : Fragment() {
     private val model: ListViewModel by viewModels()
     private var _binding : FragmentListBinding? = null
     private val binding get() = _binding!!
+    private var adapter : BeerListAdapter? = null
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -54,7 +52,7 @@ class ListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentListBinding.inflate(inflater, container, false)
         return binding.root
@@ -68,12 +66,18 @@ class ListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val button = view.findViewById<Button>(R.id.button)
+        val button = binding.button
         recycler = binding.recyclerView
-        val linearLayoutManager = LinearLayoutManager(activity)
-        recycler.addItemDecoration(DividerItemDecoration(recycler.context,DividerItemDecoration.VERTICAL))
-        recycler.layoutManager = linearLayoutManager
-        recycler.addOnScrollListener(object: PaginationScrollListener(linearLayoutManager){
+        adapter = BeerListAdapter()
+        adapter?.listener ={ beer->
+            val action = ListFragmentDirections.actionListFragmentToDetailFragment(beer.id)
+            findNavController().navigate(action)
+        }
+        recycler.layoutManager = GridLayoutManager(requireContext(),3)
+        recycler.adapter = adapter
+        //recycler.addItemDecoration(DividerItemDecoration(recycler.context,DividerItemDecoration.VERTICAL))
+        //recycler.layoutManager = linearLayoutManager
+        /*recycler.addOnScrollListener(object: PaginationScrollListener(recycler.layoutManager){
             override fun loadMoreItems() {
                 model.loadBeers(page)
                 page++
@@ -87,13 +91,13 @@ class ListFragment : Fragment() {
                 return isLoading
             }
 
-        })
+        })*/
         model.getBeers().observe(viewLifecycleOwner, { beers ->
-            recycler.adapter = BeerListAdapter(beers){beer ->
-                Toast.makeText(context, beer.name, Toast.LENGTH_SHORT).show()
-                val action = ListFragmentDirections.actionListFragmentToDetailFragment(beer.id)
-                findNavController().navigate(action)
-            }
+//            recycler.adapter = BeerListAdapter(beers){beer ->
+//            }
+            adapter?.beerList = beers
+            //adapter?.notifyDataSetChanged()
+            //adapter.notifyItemInserted(0)
             isLoading = false
         })
 

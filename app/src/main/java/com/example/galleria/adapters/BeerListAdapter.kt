@@ -1,25 +1,37 @@
 package com.example.galleria.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.galleria.R
+import com.bumptech.glide.Glide
 import com.example.app_domain.model.Beer
+import com.example.galleria.databinding.BeerHolderBinding
 
-class BeerListAdapter (private val beerList: List<Beer>, private val itemClickAction: (Beer) ->Unit = {}) :
+class BeerListAdapter :
     RecyclerView.Adapter<BeerListAdapter.BeerViewHolder>() {
-
+    private lateinit var context: Context
+    var listener: ((beer : Beer) -> Unit)? = null
+    var beerList: List<Beer> = listOf()
+        set(value){
+            field = value
+            notifyDataSetChanged()
+        }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BeerViewHolder {
-        val view  = LayoutInflater.from(parent.context).inflate(R.layout.beer_holder, parent, false)
-        return BeerViewHolder(view)
+        //val view  = LayoutInflater.from(parent.context).inflate(R.layout.beer_holder, parent, false)
+        //return BeerViewHolder(view)
+        val binding = BeerHolderBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        context = parent.context
+        return BeerViewHolder(binding)
+
     }
 
     override fun onBindViewHolder(holder: BeerViewHolder, position: Int) {
-        holder.textViewName.text = beerList[position].name
-        holder.textViewTagLine.text = beerList[position].tagLine
-        holder.itemView.setOnClickListener{itemClickAction(beerList[position])}
+//        holder.binding.textViewName.text = beerList[position].name
+//        holder.binding.textViewTagLine.text = beerList[position].tagLine
+//        Glide.with(context).load(beerList[position].imageUrl).into(holder.binding.imageViewBeer)
+//        holder.itemView.setOnClickListener{ listener?.let { it1 -> it1(beerList[position]) } }
+        holder.bind(beerList[position])
     }
 
     override fun getItemCount(): Int {
@@ -28,15 +40,17 @@ class BeerListAdapter (private val beerList: List<Beer>, private val itemClickAc
 
 
 
-    class BeerViewHolder(view: View) : RecyclerView.ViewHolder(view){
-        val textViewName: TextView
-        val textViewTagLine: TextView
-        init {
-            textViewName = view.findViewById(R.id.textViewName)
-            textViewTagLine = view.findViewById(R.id.textViewTagLine)
+    inner class BeerViewHolder(private val binding: BeerHolderBinding) : RecyclerView.ViewHolder(binding.root){
+        fun bind(beer : Beer){
+            binding.apply {
+                textViewName.text = beer.name
+                textViewTagLine.text = beer.tagLine
+                Glide.with(context).load(beer.imageUrl).into(imageViewBeer)
+                root.setOnClickListener{
+                    listener?.invoke(beer)
+                }
+            }
         }
-
-
-
     }
+
 }

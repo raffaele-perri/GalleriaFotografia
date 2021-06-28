@@ -15,5 +15,9 @@ interface IBeerRepository {
 
     suspend fun insertBeers(beers: List<Beer>)
 
-    suspend fun deleteBeer(beer: Beer)
+    suspend fun removeBeers(beers: List<Beer>)
+
+    suspend fun getFavouriteBeerById(beerId: Long) : List<Beer>
+
+    suspend fun isFavouriteBeer(beerId : Long) : Boolean
 }

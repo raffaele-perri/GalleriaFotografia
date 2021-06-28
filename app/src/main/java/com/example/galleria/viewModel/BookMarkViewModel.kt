@@ -19,12 +19,6 @@ class BookMarkViewModel @Inject constructor(private val beerRepository: IBeerRep
         return favouriteBeers
     }
 
-    fun insertBeers(beer:Beer){
-        viewModelScope.launch {
-            beerRepository.insertBeers(listOf(beer))
-        }
-    }
-
     fun loadFavouriteBeers() {
         viewModelScope.launch {
             favouriteBeers.postValue(beerRepository.getBeers())
